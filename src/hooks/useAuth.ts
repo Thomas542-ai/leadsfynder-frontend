@@ -41,12 +41,28 @@ export function useAuth() {
     const result = await authService.login(email, password);
     
     if (result && result.success) {
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('user', JSON.stringify(result.user));
-      setUser(result.user);
+      // Backend returns token in result.data.token
+      const token = result.data?.token || result.token;
+      const user = result.data?.user || result.user;
+      
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
       setIsAuthenticated(true);
     }
     
+    return result;
+  };
+
+  const register = async (userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    company: string;
+    phone?: string;
+  }) => {
+    const result = await authService.register(userData);
     return result;
   };
 
@@ -68,6 +84,7 @@ export function useAuth() {
     isAuthenticated,
     isLoading,
     login,
+    register,
     logout,
   };
 }

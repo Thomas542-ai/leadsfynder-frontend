@@ -58,9 +58,12 @@ export const authService = {
     phone?: string;
   }) {
     try {
+      console.log('Attempting registration to:', API_URL + '/auth/register');
       const response = await api.post('/auth/register', userData);
+      console.log('Registration response:', response.data);
       return response.data;
     } catch (error: any) {
+      console.error('Registration error:', error);
       const message = error.response?.data?.message || error.message || 'Registration failed';
       return { success: false, message };
     }

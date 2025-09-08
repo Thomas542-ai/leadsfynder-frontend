@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Eye, EyeOff, Mail, Lock, User, Building, Phone } from 'lucide-react'
-import { authService } from '../services/auth'
+import { useAuth } from '../hooks/useAuth'
 
 interface RegisterFormData {
   firstName: string
@@ -20,6 +20,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+  const { register: registerUser } = useAuth()
 
   const {
     register,
@@ -38,7 +39,7 @@ export default function Register() {
 
     setIsLoading(true)
     try {
-      const result = await authService.register({
+      const result = await registerUser({
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
