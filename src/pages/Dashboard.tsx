@@ -33,6 +33,8 @@ interface RecentActivity {
 
 export default function Dashboard() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  
+  console.log('Dashboard render - isAuthenticated:', isAuthenticated, 'authLoading:', authLoading, 'user:', user);
   const [stats, setStats] = useState<DashboardStats>({
     totalLeads: 0,
     verifiedLeads: 0,
@@ -147,7 +149,7 @@ export default function Dashboard() {
     }
   };
 
-  if (authLoading) {
+  if (authLoading || !isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -158,15 +160,6 @@ export default function Dashboard() {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Please log in to access the dashboard</h1>
-        </div>
-      </div>
-    );
-  }
 
   const statCards = [
     {
