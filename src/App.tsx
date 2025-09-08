@@ -27,7 +27,16 @@ function App() {
     )
   }
 
+  // Debug logging
+  console.log('App render - isAuthenticated:', isAuthenticated, 'user:', user, 'isLoading:', isLoading);
+
   if (!isAuthenticated) {
+    // Check if user is trying to access dashboard but not authenticated
+    const currentPath = window.location.pathname;
+    if (currentPath === '/dashboard' || currentPath === '/') {
+      console.log('User not authenticated, redirecting to login');
+    }
+    
     return (
       <Routes>
         <Route path="/register" element={<Register />} />

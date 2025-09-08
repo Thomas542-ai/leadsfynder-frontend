@@ -50,10 +50,13 @@ export function useAuth() {
       
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      setUser(user);
-      setIsAuthenticated(true);
       
-      console.log('Authentication state updated:', { isAuthenticated: true, user });
+      // Use setTimeout to ensure state updates properly
+      setTimeout(() => {
+        setUser(user);
+        setIsAuthenticated(true);
+        console.log('Authentication state updated:', { isAuthenticated: true, user });
+      }, 100);
     }
     
     return result;
