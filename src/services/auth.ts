@@ -8,14 +8,42 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout
 });
+
+// Add request interceptor
+api.interceptors.request.use(
+  (config) => {
+    console.log('Making request to:', config.url);
+    return config;
+  },
+  (error) => {
+    console.error('Request error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor
+api.interceptors.response.use(
+  (response) => {
+    console.log('Response received:', response.status, response.data);
+    return response;
+  },
+  (error) => {
+    console.error('Response error:', error.response?.status, error.response?.data);
+    return Promise.reject(error);
+  }
+);
 
 export const authService = {
   async login(email: string, password: string) {
     try {
+      console.log('Attempting login to:', API_URL + '/auth/login');
       const response = await api.post('/auth/login', { email, password });
+      console.log('Login response:', response.data);
       return response.data;
     } catch (error: any) {
+      console.error('Login error:', error);
       const message = error.response?.data?.message || error.message || 'Login failed';
       return { success: false, message };
     }
