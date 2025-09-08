@@ -19,18 +19,23 @@ export function useAuth() {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
 
+    console.log('useAuth useEffect - token:', token ? 'exists' : 'missing', 'userData:', userData ? 'exists' : 'missing');
+
     if (token && userData) {
       try {
         const parsedUser = JSON.parse(userData);
+        console.log('useAuth useEffect - setting authenticated user:', parsedUser);
         setUser(parsedUser);
         setIsAuthenticated(true);
       } catch (error) {
+        console.log('useAuth useEffect - error parsing user data:', error);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setUser(null);
         setIsAuthenticated(false);
       }
     } else {
+      console.log('useAuth useEffect - no token or user data, setting unauthenticated');
       setUser(null);
       setIsAuthenticated(false);
     }
@@ -48,20 +53,23 @@ export function useAuth() {
       console.log('Login successful, user data:', user);
       console.log('Token received:', token);
       
+      // Store in localStorage first
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       
-      // Update state immediately and return a promise that resolves when state is updated
+      // Update state immediately
       setUser(user);
       setIsAuthenticated(true);
-      console.log('Authentication state updated:', { isAuthenticated: true, user });
+      console.log('Authentication state updated immediately:', { isAuthenticated: true, user });
       
-      // Return a promise that resolves after state update
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(result);
-        }, 100);
-      });
+      // Force a re-render by updating state again after a short delay
+      setTimeout(() => {
+        console.log('Re-confirming authentication state after delay');
+        setUser(user);
+        setIsAuthenticated(true);
+      }, 50);
+      
+      return result;
     }
     
     return result;

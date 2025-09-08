@@ -35,11 +35,10 @@ function App() {
   const hasUser = localStorage.getItem('user');
   
   if (!isAuthenticated && hasToken && hasUser) {
-    console.log('Token found in localStorage but state not updated, forcing re-render');
-    // Force a re-render by updating the key
-    const authKey = `force-update-${Date.now()}`;
+    console.log('Token found in localStorage but state not updated, showing loading');
+    // Show loading while state catches up
     return (
-      <div key={authKey} className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     );
