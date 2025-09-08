@@ -18,7 +18,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/')
+      navigate('/dashboard')
     }
   }, [isAuthenticated, navigate])
 
@@ -27,7 +27,7 @@ export default function Login() {
     // Check if user is already logged in
     const token = localStorage.getItem('token')
     if (token) {
-      navigate('/')
+      navigate('/dashboard')
     }
   }, [navigate])
 
@@ -45,11 +45,8 @@ export default function Login() {
       
       if (result && result.success) {
         toast.success('Login successful!')
-        // Wait for authentication state to update, then navigate
-        setTimeout(() => {
-          // Force a page reload to ensure clean state
-          window.location.href = '/dashboard'
-        }, 1000)
+        // Navigate to dashboard using React Router
+        navigate('/dashboard')
       } else {
         const errorMessage = result?.message || 'Login failed'
         toast.error(errorMessage)
