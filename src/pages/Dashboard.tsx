@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import { getApiUrl } from '../config/api';
 import { 
   ChartBarIcon, 
@@ -31,9 +30,13 @@ interface RecentActivity {
   status: 'success' | 'warning' | 'error';
 }
 
-export default function Dashboard() {
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
-  
+interface DashboardProps {
+  user: any;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+export default function Dashboard({ user, isAuthenticated, isLoading: authLoading }: DashboardProps) {
   console.log('Dashboard render - isAuthenticated:', isAuthenticated, 'authLoading:', authLoading, 'user:', user);
   const [stats, setStats] = useState<DashboardStats>({
     totalLeads: 0,

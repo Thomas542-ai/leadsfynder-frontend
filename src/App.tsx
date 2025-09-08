@@ -263,15 +263,15 @@ function App() {
 
       {/* Main Content */}
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard user={user} isAuthenticated={isAuthenticated} isLoading={isLoading} />} />
+        <Route path="/dashboard" element={<Dashboard user={user} isAuthenticated={isAuthenticated} isLoading={isLoading} />} />
         <Route path="/leads" element={<LeadManager />} />
         <Route path="/lead-sources" element={<LeadSources />} />
         <Route path="/campaigns" element={<EmailCampaigns />} />
         <Route path="/whatsapp" element={<WhatsAppOutreach />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/admin" element={<AdminPanel />} />
-        <Route path="*" element={<Dashboard />} />
+        <Route path="*" element={<Dashboard user={user} isAuthenticated={isAuthenticated} isLoading={isLoading} />} />
       </Routes>
     </div>
   )
