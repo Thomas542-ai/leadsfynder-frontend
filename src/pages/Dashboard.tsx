@@ -63,8 +63,12 @@ export default function Dashboard() {
       // Combine analytics data into dashboard stats
       const dashboardStats = {
         totalLeads: 0,
-        totalCampaigns: 0,
-        totalRevenue: 0,
+        verifiedLeads: 0,
+        emailsSent: 0,
+        emailsOpened: 0,
+        repliesReceived: 0,
+        callsScheduled: 0,
+        todayFollowUps: 0,
         conversionRate: 0
       };
 
@@ -72,20 +76,29 @@ export default function Dashboard() {
         const leadsData = await leadsResponse.json();
         if (leadsData.success && leadsData.data) {
           dashboardStats.totalLeads = leadsData.data.totalLeads || 0;
+          dashboardStats.verifiedLeads = leadsData.data.verifiedLeads || 0;
+          dashboardStats.emailsSent = leadsData.data.emailsSent || 0;
+          dashboardStats.emailsOpened = leadsData.data.emailsOpened || 0;
+          dashboardStats.repliesReceived = leadsData.data.repliesReceived || 0;
+          dashboardStats.callsScheduled = leadsData.data.callsScheduled || 0;
+          dashboardStats.todayFollowUps = leadsData.data.todayFollowUps || 0;
+          dashboardStats.conversionRate = leadsData.data.conversionRate || 0;
         }
       }
 
       if (campaignsResponse.ok) {
         const campaignsData = await campaignsResponse.json();
         if (campaignsData.success && campaignsData.data) {
-          dashboardStats.totalCampaigns = campaignsData.data.totalCampaigns || 0;
+          // Use campaigns data for additional metrics if needed
+          console.log('Campaigns data:', campaignsData.data);
         }
       }
 
       if (revenueResponse.ok) {
         const revenueData = await revenueResponse.json();
         if (revenueData.success && revenueData.data) {
-          dashboardStats.totalRevenue = revenueData.data.totalRevenue || 0;
+          // Use revenue data for additional metrics if needed
+          console.log('Revenue data:', revenueData.data);
         }
       }
 
@@ -95,21 +108,24 @@ export default function Dashboard() {
       setRecentActivity([
         {
           id: '1',
-          type: 'lead',
+          type: 'lead_added',
           message: 'New lead added: John Doe',
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          status: 'success'
         },
         {
           id: '2',
-          type: 'campaign',
+          type: 'email_sent',
           message: 'Email campaign sent to 100 recipients',
-          timestamp: new Date(Date.now() - 3600000).toISOString()
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          status: 'success'
         },
         {
           id: '3',
-          type: 'conversion',
+          type: 'follow_up',
           message: 'Lead converted to customer',
-          timestamp: new Date(Date.now() - 7200000).toISOString()
+          timestamp: new Date(Date.now() - 7200000).toISOString(),
+          status: 'success'
         }
       ]);
     } catch (error) {
@@ -117,8 +133,12 @@ export default function Dashboard() {
       // Set default values on error
       setStats({
         totalLeads: 0,
-        totalCampaigns: 0,
-        totalRevenue: 0,
+        verifiedLeads: 0,
+        emailsSent: 0,
+        emailsOpened: 0,
+        repliesReceived: 0,
+        callsScheduled: 0,
+        todayFollowUps: 0,
         conversionRate: 0
       });
       setRecentActivity([]);
@@ -202,7 +222,7 @@ export default function Dashboard() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
               <p className="mt-1 text-sm text-gray-500">
-                Welcome back, {user?.firstName || 'User'}! Here's your lead generation overview.
+                Welcome back, {user?.first_name || 'User'}! Here's your lead generation overview.
               </p>
             </div>
             <div className="flex space-x-3">

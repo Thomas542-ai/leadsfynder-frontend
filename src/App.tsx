@@ -1,5 +1,5 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from './hooks/useAuth'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -15,24 +15,12 @@ function App() {
   const { isAuthenticated, isLoading, logout, user } = useAuth()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [forceRefresh, setForceRefresh] = useState(0);
   
   // Force re-render when authentication state changes
   const authKey = `${isAuthenticated}-${user?.id || 'no-user'}`
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    )
-  }
-
-  // Debug logging
-  console.log('App render - isAuthenticated:', isAuthenticated, 'user:', user, 'isLoading:', isLoading);
-
   // Force refresh if stuck in loading state
-  const [forceRefresh, setForceRefresh] = useState(0);
-  
   useEffect(() => {
     if (isLoading) {
       const timer = setTimeout(() => {
@@ -43,6 +31,17 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [isLoading]);
+
+  // Debug logging
+  console.log('App render - isAuthenticated:', isAuthenticated, 'user:', user, 'isLoading:', isLoading);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
 
   if (!isAuthenticated) {
     // Check if user is trying to access dashboard but not authenticated
