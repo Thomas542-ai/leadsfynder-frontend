@@ -30,19 +30,19 @@ function App() {
   // Debug logging
   console.log('App render - isAuthenticated:', isAuthenticated, 'user:', user, 'isLoading:', isLoading);
 
-  // Check if user has token in localStorage but state hasn't updated yet
-  const hasToken = localStorage.getItem('token');
-  const hasUser = localStorage.getItem('user');
+  // Force refresh if stuck in loading state
+  const [forceRefresh, setForceRefresh] = useState(0);
   
-  if (!isAuthenticated && hasToken && hasUser) {
-    console.log('Token found in localStorage but state not updated, showing loading');
-    // Show loading while state catches up
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        console.log('Force refreshing due to long loading state');
+        setForceRefresh(prev => prev + 1);
+      }, 5000); // 5 second timeout
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
 
   if (!isAuthenticated) {
     // Check if user is trying to access dashboard but not authenticated

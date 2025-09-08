@@ -40,7 +40,7 @@ export function useAuth() {
       setIsAuthenticated(false);
     }
     setIsLoading(false);
-  }, []);
+  }, []); // Remove dependency to prevent infinite loops
 
   const login = async (email: string, password: string) => {
     const result = await authService.login(email, password);
@@ -61,13 +61,6 @@ export function useAuth() {
       setUser(user);
       setIsAuthenticated(true);
       console.log('Authentication state updated immediately:', { isAuthenticated: true, user });
-      
-      // Force a re-render by updating state again after a short delay
-      setTimeout(() => {
-        console.log('Re-confirming authentication state after delay');
-        setUser(user);
-        setIsAuthenticated(true);
-      }, 50);
       
       return result;
     }
