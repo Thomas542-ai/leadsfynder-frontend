@@ -45,10 +45,15 @@ export function useAuth() {
       const token = result.data?.token || result.token;
       const user = result.data?.user || result.user;
       
+      console.log('Login successful, user data:', user);
+      console.log('Token received:', token);
+      
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
       setIsAuthenticated(true);
+      
+      console.log('Authentication state updated:', { isAuthenticated: true, user });
     }
     
     return result;
