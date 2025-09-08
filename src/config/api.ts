@@ -1,9 +1,8 @@
 // API configuration for the frontend
 // This file provides a centralized way to manage API URLs
 
-// Dynamic API URL based on environment
-const API_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.DEV ? 'http://localhost:8000/api' : 'https://leadsfynder-backend.onrender.com/api')
+// Force production API URL for now to fix the issue
+const API_URL = import.meta.env.VITE_API_URL || 'https://leadsfynder-backend.onrender.com/api'
 
 /**
  * Get the full API URL for a given endpoint
