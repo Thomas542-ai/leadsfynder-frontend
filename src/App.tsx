@@ -30,6 +30,21 @@ function App() {
   // Debug logging
   console.log('App render - isAuthenticated:', isAuthenticated, 'user:', user, 'isLoading:', isLoading);
 
+  // Check if user has token in localStorage but state hasn't updated yet
+  const hasToken = localStorage.getItem('token');
+  const hasUser = localStorage.getItem('user');
+  
+  if (!isAuthenticated && hasToken && hasUser) {
+    console.log('Token found in localStorage but state not updated, forcing re-render');
+    // Force a re-render by updating the key
+    const authKey = `force-update-${Date.now()}`;
+    return (
+      <div key={authKey} className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     // Check if user is trying to access dashboard but not authenticated
     const currentPath = window.location.pathname;
@@ -133,7 +148,7 @@ function App() {
             <div className="flex items-center">
               <div className="flex items-center space-x-4">
                 <span className="hidden md:block text-sm text-gray-700">
-                  Welcome, {user?.firstName || user?.email}
+                  Welcome, {user?.first_name || user?.email}
                 </span>
                 <button
                   onClick={logout}
@@ -241,7 +256,7 @@ function App() {
                 </Link>
               ) : null}
               <div className="px-3 py-2 text-sm text-gray-700 md:hidden">
-                Welcome, {user?.firstName || user?.email}
+                Welcome, {user?.first_name || user?.email}
               </div>
             </div>
           </div>

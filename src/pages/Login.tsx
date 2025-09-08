@@ -45,15 +45,11 @@ export default function Login() {
       
       if (result && result.success) {
         toast.success('Login successful!')
-        // Navigate to dashboard using React Router
-        navigate('/dashboard')
         
-        // Fallback navigation in case state update is delayed
+        // Wait a bit for state to update, then navigate
         setTimeout(() => {
-          if (window.location.pathname === '/login') {
-            navigate('/dashboard')
-          }
-        }, 500)
+          navigate('/dashboard')
+        }, 200)
       } else {
         const errorMessage = result?.message || 'Login failed'
         toast.error(errorMessage)

@@ -4,8 +4,8 @@ import { authService } from '../services/auth';
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   company: string;
   role: string;
 }
@@ -51,12 +51,17 @@ export function useAuth() {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       
-      // Use setTimeout to ensure state updates properly
-      setTimeout(() => {
-        setUser(user);
-        setIsAuthenticated(true);
-        console.log('Authentication state updated:', { isAuthenticated: true, user });
-      }, 100);
+      // Update state immediately and return a promise that resolves when state is updated
+      setUser(user);
+      setIsAuthenticated(true);
+      console.log('Authentication state updated:', { isAuthenticated: true, user });
+      
+      // Return a promise that resolves after state update
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(result);
+        }, 100);
+      });
     }
     
     return result;
@@ -65,8 +70,8 @@ export function useAuth() {
   const register = async (userData: {
     email: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     company: string;
     phone?: string;
   }) => {
