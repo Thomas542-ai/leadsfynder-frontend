@@ -14,11 +14,9 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Only run this effect once on mount
-    if (isInitialized) return;
+    console.log('useAuth useEffect - checking localStorage on mount');
     
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
@@ -44,8 +42,7 @@ export function useAuth() {
       setIsAuthenticated(false);
     }
     setIsLoading(false);
-    setIsInitialized(true);
-  }, [isInitialized]); // Only run when isInitialized changes
+  }, []); // Run only once on mount
 
   const login = async (email: string, password: string) => {
     const result = await authService.login(email, password);

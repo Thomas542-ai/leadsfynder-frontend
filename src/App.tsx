@@ -1,6 +1,6 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useAuth } from './hooks/useAuth'
+import { useAuth } from './contexts/AuthContext'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
@@ -36,6 +36,20 @@ function App() {
   console.log('App render - isAuthenticated:', isAuthenticated, 'user:', user, 'isLoading:', isLoading);
 
   if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  // Check if user has valid token in localStorage but state is not authenticated
+  const hasToken = localStorage.getItem('token');
+  const hasUserData = localStorage.getItem('user');
+  
+  if (!isAuthenticated && (hasToken && hasUserData)) {
+    console.log('App render - has token but not authenticated, forcing re-check');
+    // Force a re-render by updating the authKey
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>

@@ -3,11 +3,11 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Eye, EyeOff, Mail, Lock, User, Building, Phone } from 'lucide-react'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../contexts/AuthContext'
 
 interface RegisterFormData {
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   email: string
   password: string
   confirmPassword: string
@@ -40,8 +40,8 @@ export default function Register() {
     setIsLoading(true)
     try {
       const result = await registerUser({
-        firstName: data.firstName,
-        lastName: data.lastName,
+        first_name: data.first_name,
+        last_name: data.last_name,
         email: data.email,
         password: data.password,
         company: data.company,
@@ -88,7 +88,7 @@ export default function Register() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
                   First Name
                 </label>
                 <div className="mt-1 relative">
@@ -96,23 +96,23 @@ export default function Register() {
                     <User className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    {...register('firstName', {
+                    {...register('first_name', {
                       required: 'First name is required'
                     })}
                     type="text"
                     className={`appearance-none relative block w-full px-3 py-2 pl-10 border ${
-                      errors.firstName ? 'border-red-300' : 'border-gray-300'
+                      errors.first_name ? 'border-red-300' : 'border-gray-300'
                     } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                     placeholder="First name"
                   />
                 </div>
-                {errors.firstName && (
-                  <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>
+                {errors.first_name && (
+                  <p className="mt-1 text-sm text-red-600">{errors.first_name.message}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
                   Last Name
                 </label>
                 <div className="mt-1 relative">
@@ -120,18 +120,18 @@ export default function Register() {
                     <User className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    {...register('lastName', {
+                    {...register('last_name', {
                       required: 'Last name is required'
                     })}
                     type="text"
                     className={`appearance-none relative block w-full px-3 py-2 pl-10 border ${
-                      errors.lastName ? 'border-red-300' : 'border-gray-300'
+                      errors.last_name ? 'border-red-300' : 'border-gray-300'
                     } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                     placeholder="Last name"
                   />
                 </div>
-                {errors.lastName && (
-                  <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>
+                {errors.last_name && (
+                  <p className="mt-1 text-sm text-red-600">{errors.last_name.message}</p>
                 )}
               </div>
             </div>
